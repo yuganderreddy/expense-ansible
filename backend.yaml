@@ -12,7 +12,12 @@
     ansible.builtin.command: dnf module enable nodejs:20 -y
 
   - name: install nodejs
-    ansible.builtin.command: dnf install nodejs -y
+    ansible.builtin.package:
+      name: "{{item}}"
+      state: present
+    loop:
+    - nodejs
+    - mysql
 
   - name: create expense user
     ansible.builtin.user:
@@ -49,7 +54,7 @@
       name:
       - PyMySQL
       executable: pip3.9
-      
+
   - name: import mysql data
     community.mysql.mysql_db:
       login_user: root
