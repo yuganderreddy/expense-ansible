@@ -1,7 +1,17 @@
 - name: mysql configuration
   hosts: mysql
   become: yes
+  vars:
+  mysql_root_password: "ExpenseApp@1"
+  login_host: "mysql.yuganderreddym.online"
   tasks:
+  - name: ansible to install boto3 and botocore
+    ansible.builtin.pip:
+      name:
+      - boto3 
+      - botocore
+      executable: pip3.9
+
   - name: install mysql server
     ansible.builtin.package:
       name: mysql-server
@@ -12,3 +22,14 @@
       name: mysqld
       state: started
       enabled: yes
+
+  - name: setup root password
+    community.mysql.mysql_info:
+      login_user: root
+      login_password: "{{mysql_root_password}}"
+      login_host: "{{login_host}}"
+    register: mysql_info
+
+  - name: print mysql info
+    ansible.builtin.debug:
+      msg: "{{mysql_info}}"
