@@ -63,3 +63,9 @@
       state: import
       name: all  # if we 'import' or 'dump' in state, then must give 'all' in name.
       target: /app/schema/backend.sql
+
+  - name: daemon reload
+    ansible.builtin.systemd_service:
+      state: restarted
+      daemon_reload: true
+      name: backend
