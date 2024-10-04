@@ -3,7 +3,7 @@
   become: yes
   vars:
     mysql_root_password: "ExpenseApp@1"
-  login_host: "mysql.yuganderreddym.online"
+    login_host: "mysql.yuganderreddym.online"
   tasks:
   - name: ansible to install boto3 and botocore
     ansible.builtin.pip:
