@@ -13,14 +13,19 @@
 
   - name: create expense user
     ansible.builtin.user:
-      name: useradd expense
+      name: expense
 
-  - name: creating directory
+  - name: creating app directory
     ansible.builtin.file:
       path: /app
-      state: directory
+      state: directory  #here we should give 'state: directory' otherwise it creates 'file' by default.
 
-  - name: downloading code
+  - name: downloading backend code
     ansible.builtin.get_url:
-      url: "https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip"
+      url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
       dest: /tmp/backend.zip
+
+  - name: extracting backend code
+    ansible.builtin.unarchive:
+      src: /tmp/backend.zip
+      dest: /app
