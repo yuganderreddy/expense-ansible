@@ -13,7 +13,7 @@
 
   - name: create expense user
     ansible.builtin.user:
-    name: useradd expense
+      name: useradd expense
 
   - name: creating directory
     ansible.builtin.file:
@@ -22,7 +22,5 @@
 
   - name: downloading code
     ansible.builtin.get_url:
-    url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
-    dest: /tmp/backend.zip
-
-  - name: unzipping code
+      url: "https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip"
+      dest: /tmp/backend.zip
