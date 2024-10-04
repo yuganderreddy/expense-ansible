@@ -1,6 +1,9 @@
 - name: backend configuration
   hosts: backend
   become: yes
+  vars:
+    mysql_root_password: "ExpenseApp@1"
+    login_host: "mysql.yuganderreddym.online"
   tasks:
   - name: disable nodejs
     ansible.builtin.command: dnf module disable nodejs -y
@@ -30,3 +33,22 @@
       src: /tmp/backend.zip  #by default ansible thinks this file is in ansible server
       dest: /app
       remote_src: yes
+
+  - name: download the dependencies
+    ansible.builtin.command: npm install
+    args:
+      chdir: /app
+
+  - name: copy backend service
+    ansible.builtin.copy:
+      src: backend.service
+      dest: /etc/systemd/system/backend.service
+
+  - name: import mysql data
+    community.mysql.mysql_db:
+      login_user: root
+      login_password: "{{mysql_root_password}}"
+      login_host: "{{login_host}}"
+      state: import
+      name: all  # if we 'import' or 'dump' in state, then must give 'all' in name.
+      target: /app/schema/backend.sql
